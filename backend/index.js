@@ -2,9 +2,10 @@ const express = require('express')
 const app = express()
 const mongoose = require("mongoose")
 
-mongoose.connect("mongodb://localhost:27017/blogApp", {
-     //useNewUrlParser = true,
-     //useUnifiedTopology = true,
+const uri = process.env.ATLAS_URI;
+mongoose.connect("mongodb://localhost:27017/GoodReads", {
+     useNewUrlParser: true,
+     useCreateIndex: true,
 }, (err) => {
     if (err)
         return console.log("can not connect to db");
