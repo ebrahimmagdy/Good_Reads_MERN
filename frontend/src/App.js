@@ -1,7 +1,9 @@
 import React from 'react';
 import {Route ,BrowserRouter} from "react-router-dom";
 import AdminLogin from "./components/adminLogin"
-
+import UsrLogin from "./components/userLogin";
+import UsrSignUp from "./components/signup";
+import './assets/css/users.css';
 
 
 class App extends React.Component {
@@ -11,9 +13,9 @@ class App extends React.Component {
     return (
         <BrowserRouter >
           <div className='App'>
-            {
             <Route path="/Admin" exact component={AdminLogin} />
-            }
+            <Route path='/' exact component={UsrLogin}/>
+            <Route path='/' exact component={UsrSignUp}/>            
           </div>
         </BrowserRouter>
     );

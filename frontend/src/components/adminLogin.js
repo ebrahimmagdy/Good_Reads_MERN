@@ -6,7 +6,7 @@ import '../assets/css/bootstrap.min.css'
 require("../assets/css/adminLoginPage.css");
 
 function sendingAdminAuth(data) {
-  return fetch('http://localhost:4000/admin/', {
+  return fetch('http://localhost:5000/admin/', {
     headers: {
       "Content-Type": "application/json",
     },
@@ -48,7 +48,6 @@ class AdminLogin extends Component {
       }
       else
       {
-        // swal("Security Alert !", "You are not authorized to access the dashboard !", "error");      
         swal({
         title: "Security Alert !", 
         text : "You are not authorized to access the dashboard !", 
