@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const bcrypt = require('bcrypt')
 const userSchema = new mongoose.Schema({
 
     firstName: { type: String, required: "Your first Name is required" },
@@ -17,6 +17,17 @@ const userSchema = new mongoose.Schema({
         default: false
     },
 });
+
+userSchema.pre("save", function (next) {
+    if(this.isNew){
+        bcrypt.hash(this.password, 10, (err, hashedPassword) => {
+            this.password = hashedPassword
+            next()
+        })
+    }else{
+        next()
+    }
+})
 
 
 const User = mongoose.model('users', userSchema);
