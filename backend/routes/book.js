@@ -7,20 +7,23 @@ const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken')
 const jwt_functions = require("../helper/jwt_functions") 
 
-// Router.post("/", jwt_functions.isAuthorizedAsAdmin, async (request, response, next) => {
-//     try{
-//         const bookData = request.body
-//         const bookInstance = new Book({
-//             name: bookData.name,
-//         })
-//         const book = await bookInstance.save()
-//         console.log(book);
-//         response.send("book created")
-//     } catch (e){
-//         console.log(e);
-//         response.status(500).send("Error happend!")
-//     }
-// })
+Router.post("/", jwt_functions.isAuthorizedAsAdmin, async (request, response, next) => {
+    try{
+        const bookData = request.body
+        const bookInstance = new Book({
+            name: bookData.name,
+            photo: bookData.photo,
+            categoryId: bookData.categoryId,
+            authorId: bookData.authorId,
+        })
+        const book = await bookInstance.save()
+        console.log(book);
+        response.send("book created")
+    } catch (e){
+        console.log(e);
+        response.status(500).send("Error happend!")
+    }
+})
 
 Router.get("/", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
     try{

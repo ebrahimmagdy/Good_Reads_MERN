@@ -5,7 +5,7 @@ const User = require("../models/user");
 const bcrypt = require('bcrypt')
 const jwt_functions = require("../helper/jwt_functions") 
 
-Router.get("/", async (request, response) => {
+Router.get("/", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
     try{
         const users = await User.find()
         response.json(users)
@@ -14,7 +14,7 @@ Router.get("/", async (request, response) => {
     }
 })
 
-Router.get("/:id", async (request, response) => {
+Router.get("/:id", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
     try{
         const id = request.params.id
         const user = await User.findById(id)
@@ -55,7 +55,6 @@ Router.post("/login", async (req, res) => {
     }
     try {
         if(await bcrypt.compare(req.body.password, user.password)){
-            res.send("success")
             const token = jwt_functions.generateAccessToken({ email: req.body.email });
             console.log(token);
             res.json({token});
@@ -81,7 +80,7 @@ Router.patch("/update/:id", jwt_functions.isAuthenticated, async (request, respo
     }
 })
 
-Router.delete("/:id", jwt_functions.isAuthenticated, async (request, response) => {
+Router.delete("/:id", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
     try{
         const id = request.params.id
         const user = await User.findByIdAndDelete(id)
@@ -90,12 +89,5 @@ Router.delete("/:id", jwt_functions.isAuthenticated, async (request, response) =
         console.log(e);
     }
 })
-
-// Router.post('/logout', (req, res) => {
-//     const token  = req.body;
-//     refreshTokens = refreshTokens.filter(token => t !== token);
-
-//     res.send("Logout successful");
-// });
 
 module.exports = Router
