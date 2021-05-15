@@ -51,8 +51,6 @@ class UserLogin extends React.Component {
       if (data.token) {
         let cookies = new Cookies();
         cookies.set('token', data.token, { path: '/' });
-        // cookies.set('username', data.name, { path: '/' });
-        // cookies.set('currentUser', data.currentUser, { path: '/' });
         window.location = "http://localhost:3000/home";
       } else {
         alert("invalid email or password");

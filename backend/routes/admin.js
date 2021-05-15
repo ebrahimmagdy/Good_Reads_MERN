@@ -46,19 +46,19 @@ Router.post("/", async (req, res) => {
     }
 })
 
-Router.post("/create_category", jwt_functions.isAuthorizedAsAdmin, async (request, response, next) => {
-    try{
-        const categoryData = request.body
-        const categoryInstance = new Category({
-            name: categoryData.name,
-        })
-        const category = await categoryInstance.save()
-        console.log(category);
-        response.send("category created")
-    } catch (e){
-        console.log(e);
-        response.status(500).send("Error happend!")
-    }
-})
+// Router.post("/create_category", jwt_functions.isAuthorizedAsAdmin, async (request, response, next) => {
+//     try{
+//         const categoryData = request.body
+//         const categoryInstance = new Category({
+//             name: categoryData.name,
+//         })
+//         const category = await categoryInstance.save()
+//         console.log(category);
+//         response.send("category created")
+//     } catch (e){
+//         console.log(e);
+//         response.status(500).send("Error happend!")
+//     }
+// })
 
 module.exports = Router
