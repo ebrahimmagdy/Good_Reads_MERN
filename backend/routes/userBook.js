@@ -46,7 +46,7 @@ Router.get("/:id", async (request, response) => {
 Router.get("/user/:id", jwt_functions.isAuthenticated, async (request, response) => {
     try{
         const id = request.params.id
-        const userBook = await UserBook.findOne({userId: id}).populate("userId").populate("bookId")
+        const userBook = await UserBook.find({userId: id}).populate("userId").populate("bookId")
         response.json(userBook)
     } catch (e){
 
