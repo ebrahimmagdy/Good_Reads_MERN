@@ -46,7 +46,7 @@ Router.get("/:id", async (request, response) => {
 Router.get("/book/:id", async (request, response) => {
     try{
         const id = request.params.id
-        const review = await Review.findOne({bookId: id})
+        const review = await Review.find({bookId: id})
         response.json(review)
     } catch (e){
 

@@ -11,8 +11,8 @@ const userBookRouter = require('./routes/userBook')
 const User = require("./models/user")
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv').config()
-const uri = process.env.ATLAS_URI
-const validPaths = ["/admin/", "/users/", "/users/login"]
+const authorRouter = require('./routes/author')
+const uri = process.env.ATLAS_URI;
 
 mongoose.connect("mongodb://localhost:27017/GoodReads", {
      useNewUrlParser: true,
@@ -37,10 +37,10 @@ app.use("/admin", adminRouter)
 app.use("/users", userRouter)
 app.use("/books", bookRouter)
 app.use("/categories", categoryRouter)
-app.use("/rate", rateRouter)
-app.use("/review", reviewRouter)
-app.use("/userbook", userBookRouter)
-
+app.use("/rates", rateRouter)
+app.use("/reviews", reviewRouter)
+app.use("/userbooks", userBookRouter)
+app.use("/authors", authorRouter)
 
 app.listen(5000, (err) => {
     if(err)
