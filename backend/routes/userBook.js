@@ -26,7 +26,7 @@ Router.post("/", jwt_functions.isAuthenticated, async (request, response, next) 
 
 Router.get("/", async (request, response) => {
     try{
-        const userBooks = await UserBook.find()
+        const userBooks = await UserBook.find().populate("userId").populate("bookId")
         response.json(userBooks)
     } catch (e){
 
@@ -36,7 +36,7 @@ Router.get("/", async (request, response) => {
 Router.get("/:id", async (request, response) => {
     try{
         const id = request.params.id
-        const userBook = await UserBook.findById(id)
+        const userBook = await UserBook.findById(id).populate("userId").populate("bookId")
         response.json(userBook)
     } catch (e){
 
@@ -46,7 +46,7 @@ Router.get("/:id", async (request, response) => {
 Router.get("/user/:id", jwt_functions.isAuthenticated, async (request, response) => {
     try{
         const id = request.params.id
-        const userBook = await UserBook.findOne({userId: id})
+        const userBook = await UserBook.findOne({userId: id}).populate("userId").populate("bookId")
         response.json(userBook)
     } catch (e){
 
