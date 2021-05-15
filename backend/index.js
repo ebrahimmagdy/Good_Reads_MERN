@@ -13,6 +13,7 @@ const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv').config()
 const uri = process.env.ATLAS_URI
 const validPaths = ["/admin/", "/users/", "/users/login"]
+const cors = require("cors");
 
 mongoose.connect("mongodb://localhost:27017/GoodReads", {
      useNewUrlParser: true,
@@ -25,14 +26,17 @@ mongoose.connect("mongodb://localhost:27017/GoodReads", {
 })
 
 ////////////////////////////////////////in client side///////////////////////
-// // get token from fetch request
+// get token from fetch request
 // const token = await res.json();
 //
 // // set token in cookie
 // document.cookie = `token=${token}`
 /////////////////////////////////////////////////////////////////////////////
 
+
 app.use(express.json())
+app.use(cors());
+
 app.use("/admin", adminRouter)
 app.use("/users", userRouter)
 app.use("/books", bookRouter)

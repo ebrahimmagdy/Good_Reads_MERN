@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import swal from 'sweetalert';
 
  function SignUpUser(data) {
-  return fetch('http://localhost:5000/user/sign_up/', {
+  return fetch('http://localhost:5000/users/', {
     body: JSON.stringify(data),
     method: 'POST',
     headers: {
@@ -75,49 +75,27 @@ class UsrSignUp extends React.Component {
       'password': this.state.password,
     }).then(data => {
       console.log(data);
-      if(! (data.email && data.firstName && data.lastName && data.password ))
-        swal({
-        title: "Invalid Data !", 
-        text : "Please enter your info for registeration !",
-        icon : "error",
-        showLoaderOnConfirm: true,
-        }).then(function(){console.log("fail to add account!")})
-
-
-      else if(data.email === ("Email already exists"))
-        swal({
-        title: "Invalid Data !", 
-        text : "This Email is already existed in our db",
-        icon : "error",
-        showLoaderOnConfirm: true,
-        }).then(function(){console.log("fail to add account!")})
-
-      else if(data.firstName && data.firstName.msg)
-        swal({
-        title: "Invalid Data !", 
-        text : "Minmum character for first name is 4 characters !",
-        icon : "error",
-        showLoaderOnConfirm: true,
-        }).then(function(){console.log("fail to add account!")})
-        
-        
-      else if(data.lastName && data.lastName.msg)
-        swal({
-        title: "Invalid Data !", 
-        text : "Minmum character for last name is 4 characters !",
-        icon : "error",
-        showLoaderOnConfirm: true,
-        }).then(function(){console.log("fail to add account!")})
-
-      else
+      
+      if(data.status == "user created"){
       swal({
             title: "~~ Information ~~", 
             text : "Your Account was created successfully !", 
             icon : "success",
             showLoaderOnConfirm: true,
             }).then(function(){console.log("added acount!")})
+          }
+      else{
+          swal({
+          title: "Invalid Data !", 
+          text : "Please enter your info for registeration !",
+          icon : "error",
+          showLoaderOnConfirm: true,
+          }).then(function(){console.log("fail to add account!")})
+      }
     });
   }
+     
+   
 
   render() {
     return (
@@ -194,7 +172,7 @@ class UsrSignUp extends React.Component {
                             onChange={this.handleUpdatePassword}/> </FormGroup>
 
                     <Button variant="primary mt-4" size="lg" block onClick={this.hundleSignUp}> Sign up</Button>
-                    <Button variant="outline-primary mt-3" size="lg" block onClick={this.hundleSignUp}><img src="https://pics.freeicons.io/uploads/icons/png/2659939281579738432-512.png" width="25" className="mr-2"/> Sign up with Google</Button>
+                    {/* <Button variant="outline-primary mt-3" size="lg" block onClick={this.hundleSignUp}><img src="https://pics.freeicons.io/uploads/icons/png/2659939281579738432-512.png" width="25" className="mr-2"/> Sign up with Google</Button> */}
 
                   </Form>
                 </Card.Body>

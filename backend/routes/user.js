@@ -42,7 +42,7 @@ Router.post("/", async (req, res, next) => {
         res.json({'status': "user created", 'token': token});
     } catch (e){
         console.log(e);
-        res.status(500).send("Error happend!")
+        res.status(500).json(e)
     }
 })
 
@@ -51,7 +51,7 @@ Router.post("/login", async (req, res) => {
     const user = await User.findOne({email: req.body.email})
     console.log(user);
     if(user == null){
-        return res.status(400).send("user not found")
+        return res.status(400).json({token:""})
     }
     try {
         if(await bcrypt.compare(req.body.password, user.password)){
@@ -62,7 +62,7 @@ Router.post("/login", async (req, res) => {
             res.send("wrong mail or password")
         }
     } catch (error) {
-        res.status(500).send()
+        res.status(500).json({token:""})
     }
 })
 

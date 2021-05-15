@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 
 function LoginUser(data) {
   console.log(JSON.stringify(data));
-  return fetch('http://localhost:5000/user/', {
+  return fetch('http://localhost:5000/users/login', {
     body: JSON.stringify(data),
     method: 'POST',
     headers: {
@@ -51,8 +51,8 @@ class UserLogin extends React.Component {
       if (data.token) {
         let cookies = new Cookies();
         cookies.set('token', data.token, { path: '/' });
-        cookies.set('username', data.name, { path: '/' });
-        cookies.set('currentUser', data.currentUser, { path: '/' });
+        // cookies.set('username', data.name, { path: '/' });
+        // cookies.set('currentUser', data.currentUser, { path: '/' });
         window.location = "http://localhost:3000/home";
       } else {
         alert("invalid email or password");

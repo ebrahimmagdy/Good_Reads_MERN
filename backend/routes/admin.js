@@ -15,7 +15,7 @@ Router.post("/", async (req, res) => {
     const user = await User.findOne({email: req.body.email})
     console.log(user);
     if(user == null){
-        return res.status(400).send("user not found")
+        return res.status(400).json({msg:"user not found"})
     }
     if(user.isAdmin != true){
         return res.status(400).send("you are not authorized to access this page")
