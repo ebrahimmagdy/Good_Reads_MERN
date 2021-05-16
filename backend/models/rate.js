@@ -1,16 +1,23 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const rateSchema = new mongoose.Schema({
-    rate: {type: Number,default: 0},
+const rateSchema = new mongoose.Schema(
+  {
+    rate: { type: Number, min: 0, max: 5, required: true },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users"
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
     },
     bookId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "books"
-    }
-});
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Book",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const Rate = mongoose.model('rate', rateSchema);
+const Rate = mongoose.model("Rate", rateSchema);
 module.exports = Rate;
