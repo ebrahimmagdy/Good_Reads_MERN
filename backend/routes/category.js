@@ -18,7 +18,7 @@ Router.post("/", jwt_functions.isAuthorizedAsAdmin, async (request, response, ne
         response.send("category created")
     } catch (e){
         console.log(e);
-        response.status(500).send("Error happend!")
+        response.status(500).json({event:e})
     }
 })
 

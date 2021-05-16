@@ -45,7 +45,8 @@ class AdminLogin extends Component {
       if (data.msg !== "user not found") {
         let cookies = new Cookies();
         cookies.set('token', data.token, {path: '/'});
-        window.location = "http://localhost:3000/dashboard";
+        console.log(cookies)
+        // window.location = "http://localhost:3000/dashboard";
       }
       else
       {
