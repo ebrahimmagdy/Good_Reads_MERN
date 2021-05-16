@@ -1,20 +1,20 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const adminRouter = require("./routes/admin");
-const userRouter = require("./routes/user");
-const categoryRouter = require("./routes/category");
-const bookRouter = require("./routes/book");
-const rateRouter = require("./routes/rate");
-const reviewRouter = require("./routes/review");
-const userBookRouter = require("./routes/userBook");
+const adminRouter = require("./routes/admins");
+const userRouter = require("./routes/users");
+const categoryRouter = require("./routes/categories");
+const bookRouter = require("./routes/books");
+const rateRouter = require("./routes/rates");
+const reviewRouter = require("./routes/reviews");
+const userBookRouter = require("./routes/userBooks");
 const User = require("./models/user");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 const uri = process.env.ATLAS_URI;
 const validPaths = ["/admin/", "/users/", "/users/login"];
 const cors = require("cors");
-const authorRouter = require("./routes/author");
+const authorRouter = require("./routes/authors");
 
 const PORT = 5000;
 
