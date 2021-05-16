@@ -46,7 +46,7 @@ class AdminLogin extends Component {
         let cookies = new Cookies();
         cookies.set('token', data.token, {path: '/'});
         console.log(cookies)
-        // window.location = "http://localhost:3000/dashboard";
+        window.location = "http://localhost:3000/dashboard";
       }
       else
       {

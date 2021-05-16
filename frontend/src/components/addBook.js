@@ -7,18 +7,30 @@ import '../assets/css/adminDashboard.css';
 
 
 function GetBooks() {
-    return fetch('http://localhost:4000/books/')
-    .then(response => response.json())
+    return fetch('http://localhost:5000/books/', {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer "+ new Cookies().get('token'),
+          },
+    }).then(response => response.json())
 }
   
 function GetAuthors() {
-    return fetch('http://localhost:4000/authors/')
-    .then(response => response.json())
+    return fetch('http://localhost:5000/authors/', {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer "+ new Cookies().get('token'),
+          },
+    }).then(response => response.json())
 }
 
 function GetCategories() {
-    return fetch('http://localhost:4000/categories/')
-    .then(response => response.json())
+    return fetch('http://localhost:5000/categories/', {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer "+ new Cookies().get('token'),
+          },
+    }).then(response => response.json())
   }
 
 function AddBook(data)
@@ -29,11 +41,12 @@ function AddBook(data)
     formData.append('authorId', data.authorId);
     formData.append('photo', data.photo);
 
-  return fetch('http://localhost:4000/books/', {
+  return fetch('http://localhost:5000/books/', {
     method: 'POST',
     body: formData,
     headers: {
-      "Authorization": new Cookies().get('token'),
+        "Content-Type": "application/json",
+        "Authorization": "Bearer "+ new Cookies().get('token'),
     },
   }).then(response => response.json()
    ).catch(error => {console.log('Error while adding book!');})
@@ -53,11 +66,13 @@ function EditBook(data)
   formData.append('authorId', data.authorId);
   formData.append('photo', data.photo);
 
-  return fetch('http://localhost:4000/books/'+data._id, {
+  return fetch('http://localhost:5000/books/'+data._id, {
     method: 'PUT',
     body: formData,
-    headers: { "Authorization": new Cookies().get('token'),
-},
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer "+ new Cookies().get('token'),
+    },
   }).then(response => response.json()
   ).catch(error => { console.log('Error while getting books !');})
 }
@@ -65,11 +80,11 @@ function EditBook(data)
   
 function DeleteBook(id)
 {
-    return fetch('http://localhost:4000/books/'+id, {
+    return fetch('http://localhost:5000/books/'+id, {
       method: 'DELETE',
       headers: {
         "Content-Type": "application/json",
-        "Authorization": new Cookies().get('token'),
+        "Authorization": "Bearer "+ new Cookies().get('token'),
       },
     }).then(response => response.json()
     ).catch(error => {console.log('Error while deleting the book!');})

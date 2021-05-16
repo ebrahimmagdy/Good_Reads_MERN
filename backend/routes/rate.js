@@ -24,7 +24,7 @@ Router.post("/", jwt_functions.isAuthenticated, async (request, response, next) 
     }
 })
 
-Router.get("/", async (request, response) => {
+Router.get("/", jwt_functions.isAuthenticated, async (request, response) => {
     try{
         const rates = await Rate.find()
         response.json(rates)
@@ -33,7 +33,7 @@ Router.get("/", async (request, response) => {
     }
 })
 
-Router.get("/:id", async (request, response) => {
+Router.get("/:id", jwt_functions.isAuthenticated, async (request, response) => {
     try{
         const id = request.params.id
         const rate = await Rate.findById(id)
@@ -43,7 +43,7 @@ Router.get("/:id", async (request, response) => {
     }
 })
 
-Router.get("/book/:id", async (request, response) => {
+Router.get("/book/:id", jwt_functions.isAuthenticated, async (request, response) => {
     try{
         const id = request.params.id
         const rate = await Rate.find({bookId: id})

@@ -22,7 +22,7 @@ Router.post("/", jwt_functions.isAuthorizedAsAdmin, async (request, response, ne
     }
 })
 
-Router.get("/", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
+Router.get("/", async (request, response) => {
     try{
         const categorys = await Category.find()
         response.json(categorys)
@@ -31,7 +31,7 @@ Router.get("/", jwt_functions.isAuthorizedAsAdmin, async (request, response) => 
     }
 })
 
-Router.get("/:id", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
+Router.get("/:id", async (request, response) => {
     try{
         const id = request.params.id
         const category = await Category.findById(id)

@@ -25,7 +25,7 @@ Router.post("/", jwt_functions.isAuthorizedAsAdmin, async (request, response, ne
     }
 })
 
-Router.get("/", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
+Router.get("/", async (request, response) => {
     try{
         const books = await Book.find()
         response.json(books)
@@ -34,7 +34,7 @@ Router.get("/", jwt_functions.isAuthorizedAsAdmin, async (request, response) => 
     }
 })
 
-Router.get("/:id", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
+Router.get("/:id", async (request, response) => {
     try{
         const id = request.params.id
         const book = await Book.findById(id)
