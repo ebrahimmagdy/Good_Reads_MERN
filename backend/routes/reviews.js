@@ -31,10 +31,10 @@ Router.get("/", async (req, res) => {
     let { skip, limit } = getLimits(page, size);
 
     const reviews = await Review.find()
-      .populate("userId")
-      .populate("bookId")
       .limit(limit)
-      .skip(skip);
+      .skip(skip)
+      .populate("userId")
+      .populate("bookId");
     res.send({ page, size, data: reviews });
   } catch (error) {
     res.sendStatus(500).send(error.message);

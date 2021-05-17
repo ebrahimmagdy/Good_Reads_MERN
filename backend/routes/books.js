@@ -32,13 +32,13 @@ Router.get("/", jwt_functions.isAuthorizedAsAdmin, async (req, res) => {
     let { skip, limit } = getLimits(page, size);
 
     const books = await Book.find()
-      .populate("categoryId")
-      .populate("authorId")
       .limit(limit)
-      .skip(skip);
-    res.send({ page, size, data: books });
+      .skip(skip)
+      .populate("categoryId")
+      .populate("authorId");
+    return res.send({ page, size, data: books });
   } catch (error) {
-    res.sendStatus(500).send(error.message);
+    return res.sendStatus(500).send(error.message);
   }
 });
 
