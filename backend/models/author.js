@@ -32,7 +32,7 @@ const authorSchema = new mongoose.Schema(
 authorSchema.post("remove", async function (doc, next) {
   const deletedAuthor = this;
   const authorBooks = (await MyModel.find({ authorId: deletedAuthor._id, }).exec()) || [];
-  if (authorBooks) {
+  if (authorBooks.length !== 0) {
     authorBooks.forEach((book) => {
       book.remove();
     });
