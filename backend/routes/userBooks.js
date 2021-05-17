@@ -1,10 +1,6 @@
-const { request, response } = require("express");
 const express = require("express");
 const Router = express.Router();
 const UserBook = require("../models/userBook");
-const bcrypt = require("bcrypt");
-const dotenv = require("dotenv");
-const jwt = require("jsonwebtoken");
 const jwt_functions = require("../helper/jwt_functions");
 
 Router.post(

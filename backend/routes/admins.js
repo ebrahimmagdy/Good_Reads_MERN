@@ -2,10 +2,8 @@ const { request, response } = require("express");
 const express = require("express");
 const Router = express.Router();
 const User = require("../models/user");
-const Category = require("../models/category");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
-const jwt = require("jsonwebtoken");
 const jwt_functions = require("../helper/jwt_functions");
 
 dotenv.config();

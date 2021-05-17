@@ -66,7 +66,7 @@ app.use("/authors", authorRouter);
 
 app.listen(PORT, (err) => {
   if (err) return console.log(err);
-  console.log(`Starter server on port ${PORT}`);
+  console.log(`Started server on port ${PORT}`);
 });
 
 module.exports = mongoose;

@@ -1,4 +1,3 @@
-const { request, response } = require("express");
 const express = require("express");
 const Router = express.Router();
 const User = require("../models/user");
