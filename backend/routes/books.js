@@ -71,18 +71,23 @@ Router.patch(
   }
 );
 
-Router.delete(
-  "/:id",
-  jwt_functions.isAuthorizedAsAdmin,
-  async (request, response) => {
-    try {
-      const id = request.params.id;
-      const book = await Book.findByIdAndDelete(id);
-      response.send("book deleted");
-    } catch (e) {
-      console.log(e);
+Router.delete("/:id", jwt_functions.isAuthorizedAsAdmin, async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const deletedBook = await Book.findById(_id);
+    if (!deletedBook) {
+      res.status(404).send({ error: "Book not found!" });
+      return;
     }
+    try {
+      deletedBook.remove();
+    } catch (error) {
+      res.status(500).send(error);
+    }
+    res.send(deletedBook);
+  } catch (error) {
+    res.status(500).send(error);
   }
-);
+});
 
 module.exports = Router;

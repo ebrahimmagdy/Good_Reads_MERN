@@ -31,7 +31,13 @@ const authorSchema = new mongoose.Schema(
 // post hook to cascade delete author books on deleting the author
 authorSchema.post("remove", async function (doc, next) {
   const deletedAuthor = this;
-  await bookModel.deleteMany({ authorId: deletedAuthor._id });
+  const authorBooks = (await MyModel.find({ authorId: deletedAuthor._id, }).exec()) || [];
+  if (authorBooks) {
+    authorBooks.forEach((book) => {
+      book.remove();
+    });
+  }
+
   return next();
 });
 
