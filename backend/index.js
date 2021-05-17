@@ -1,6 +1,8 @@
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const cors = require("cors");
+
 const adminRouter = require("./routes/admins");
 const userRouter = require("./routes/users");
 const categoryRouter = require("./routes/categories");
@@ -8,13 +10,15 @@ const bookRouter = require("./routes/books");
 const rateRouter = require("./routes/rates");
 const reviewRouter = require("./routes/reviews");
 const userBookRouter = require("./routes/userBooks");
+const authorRouter = require("./routes/authors");
+
 const User = require("./models/user");
-const jwt = require("jsonwebtoken");
+
 const dotenv = require("dotenv").config();
 const uri = process.env.ATLAS_URI;
 const validPaths = ["/admin/", "/users/", "/users/login"];
-const cors = require("cors");
-const authorRouter = require("./routes/authors");
+
+const app = express();
 
 const PORT = 5000;
 
