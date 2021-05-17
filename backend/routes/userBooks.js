@@ -2,6 +2,7 @@ const express = require("express");
 const Router = express.Router();
 const UserBook = require("../models/userBook");
 const jwt_functions = require("../helper/jwt_functions");
+const { getLimits } = require("../helper/pagination");
 
 Router.post(
   "/",
@@ -26,11 +27,18 @@ Router.post(
 
 Router.get("/", async (request, response) => {
   try {
+    let { page, size } = req.query;
+    let { skip, limit } = getLimits(page, size);
+
     const userBooks = await UserBook.find()
+      .limit(limit)
+      .skip(skip)
       .populate("userId")
       .populate("bookId");
-    response.json(userBooks);
-  } catch (e) {}
+    return res.send({ page, size, data: userBooks });
+  } catch (error) {
+    return res.sendStatus(500).send(error.message);
+  }
 });
 
 Router.get("/:id", async (request, response) => {
