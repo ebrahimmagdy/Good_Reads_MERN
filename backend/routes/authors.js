@@ -1,8 +1,7 @@
 const express = require("express");
-const app = express();
+const { getLimits } = require("../helper/pagination");
 const authorRouter = express.Router();
 const Author = require("../models/author");
-const Book = require("../models/book");
 const User = require("../models/user");
 
 /**
@@ -51,14 +50,16 @@ authorRouter.post("/", (req, res, next) => {
 /**
  * Return Authors
  */
-authorRouter.get("/", (req, res) => {
-  Author.find()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      res.send("Error while getting Author info");
-    });
+authorRouter.get("/", async (req, res) => {
+  let { page, size } = req.query;
+  let { skip, limit } = getLimits(page, size);
+
+  try {
+    const authors = await Author.find().limit(limit).skip(skip);
+    res.send({ page, size, data: authors });
+  } catch (error) {
+    res.sendStatus(500).send(error.message);
+  }
 });
 
 /**

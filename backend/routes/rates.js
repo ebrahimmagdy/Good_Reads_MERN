@@ -1,11 +1,8 @@
-const { request, response } = require("express");
 const express = require("express");
 const Router = express.Router();
 const Rate = require("../models/rate");
-const bcrypt = require("bcrypt");
-const dotenv = require("dotenv");
-const jwt = require("jsonwebtoken");
 const jwt_functions = require("../helper/jwt_functions");
+const { getLimits } = require("../helper/pagination");
 
 Router.post(
   "/",
@@ -28,11 +25,20 @@ Router.post(
   }
 );
 
-Router.get("/", async (request, response) => {
+Router.get("/", async (req, res) => {
   try {
-    const rates = await Rate.find();
-    response.json(rates);
-  } catch (e) {}
+    let { page, size } = req.query;
+    let { skip, limit } = getLimits(page, size);
+
+    const rates = await Rate.find()
+      .populate("userId")
+      .populate("bookId")
+      .limit(limit)
+      .skip(skip);
+    res.send({ page, size, data: rates });
+  } catch (error) {
+    res.sendStatus(500).send(error.message);
+  }
 });
 
 Router.get("/:id", async (request, response) => {
