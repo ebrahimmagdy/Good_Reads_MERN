@@ -10,12 +10,12 @@ const reviewSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "users",
+      ref: "User",
     },
     bookId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "books",
+      ref: "Book",
     },
   },
   {
