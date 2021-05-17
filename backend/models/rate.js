@@ -19,5 +19,7 @@ const rateSchema = new mongoose.Schema(
   }
 );
 
+rateSchema.index({ userId: 1, bookId: 1 }, { unique: true });
+
 const Rate = mongoose.model("Rate", rateSchema);
 module.exports = Rate;
