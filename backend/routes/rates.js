@@ -1,8 +1,10 @@
 const express = require("express");
 const Router = express.Router();
 const Rate = require("../models/rate");
+const Book = require("../models/book");
 const jwt_functions = require("../helper/jwt_functions");
 const { getLimits } = require("../helper/pagination");
+const mongoose = require("mongoose");
 
 Router.post(
   "/",
@@ -20,7 +22,7 @@ Router.post(
       response.send("rate created");
     } catch (e) {
       console.log(e);
-      response.status(500).send("Error happend!");
+      response.status(500).send(e.message);
     }
   }
 );
@@ -49,7 +51,47 @@ Router.get("/:id", async (request, response) => {
   } catch (e) {}
 });
 
-Router.get("/book/:id", async (request, response) => {
+Router.get("/books/avg", async (req, res) => {
+  try {
+    let { page, size } = req.query;
+    let { skip, limit } = getLimits(page, size);
+
+    console.log(
+      "========================== H E R E ================================="
+    );
+
+    const data = await Rate.aggregate([
+      { $match: { rate: { $ne: null } } },
+      {
+        $lookup: {
+          from: Book.collection.name,
+          localField: "bookId",
+          foreignField: "_id",
+          as: "bookData",
+        },
+      },
+      { $unwind: "$bookData" },
+      {
+        $group: {
+          _id: "$bookData",
+          averageRating: { $avg: "$rate" },
+          rateCount: { $sum: 1 },
+        },
+      },
+      { $sort: { averageRating: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+    ]);
+
+    console.log(data);
+
+    res.json(data);
+  } catch (error) {
+    res.sendStatus(500).send(error.message);
+  }
+});
+
+Router.get("/books/:id", async (request, response) => {
   try {
     const id = request.params.id;
     const rate = await Rate.find({ bookId: id });
@@ -59,12 +101,14 @@ Router.get("/book/:id", async (request, response) => {
 
 Router.get("/books/:id/avg", async (req, res) => {
   try {
-    const bookId  = req.params.id;
+    const bookId = mongoose.Types.ObjectId(req.params.id);
     console.log(bookId);
 
-    const bookData = Rate.aggregate([
+    const bookData = await Rate.aggregate([
       { $match: { rate: { $ne: null }, bookId: bookId } },
-      { $group: { _id: bookId, count: { $sum: 1 } } },
+      {
+        $group: { _id: bookId, average: { $avg: "$rate" }, count: { $sum: 1 } },
+      },
     ]);
 
     console.log(bookData);
