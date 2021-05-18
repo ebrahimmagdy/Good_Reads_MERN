@@ -1,26 +1,23 @@
-const express = require('express');
-const app = express();
-const authorRouter = express.Router();
-const Author = require('../models/author');
-const Book = require('../models/book');
-const User = require('../models/user');
-    
+var express = require('express');
+var authorRouter = express.Router();
+var Author = require('../models/author');
+const upload = require('../helper/ImageUplaoding')
+// const User = require('../models/user');
+
+
 /**
  * Adding a new Author
  */
-authorRouter.post('/',(req, res, next) => {
-    const user = User.findOne({email: req.body.email})
-    if(user == null){
-        return res.status(400).send("user not found")
-    }
-    else{
+ authorRouter.post('/', upload.single('photo'), (req, res, next) => {
+
         Author.findOne({ firstName: req.body.firstName, lastName: req.body.lastName }).then(author => {
+    
         if (author) 
-            return res.status(400).json({massege: 'Your Author is already exists !' });
+            return res.status(400).json({ name: 'Your Author is already exists !' });
+        
         else{
             const author = new Author({
-                // photo: req.file.path || 'No photo till the moment',
-                photo: req.body.photo,
+                photo: req.file.path || 'No photo till the moment',
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 dateOfBirth: req.body.dateOfBirth,
@@ -38,30 +35,71 @@ authorRouter.post('/',(req, res, next) => {
             });
     }
         })
+    
+});
+
+    /**
+     * Return Authors
+     */
+    
+    authorRouter.get('/', async(req, res) => {
+        try {
+            let authors = await Author.find({}).populate('author');
+            res.json({
+                message: "Authors list",
+                data: authors
+            });
+      
+ 
+        
+    } catch (err) {
+        return res.status(403).send({ message: 'can not get all authors' })
     }
-});
+   });
 
-
-/**
- * Return Authors
- */
-authorRouter.get('/', (req, res) => {
-    Author.find().then((data) => {
-        res.json(data);
-    }).catch((err) => {
-        res.send('Error while getting Author info');
-    });
-});
 
 /**
  * Return Author with a specific id
  */
-authorRouter.get('/:id', (req, res) => {
-    Author.findById(req.params.id).then((data) => {
-        res.send(data);
-    }).catch((err) => {
-        res.send('Error While getting data : ' + err);
-    });
+
+
+
+authorRouter.get('/:id', async(req, res) => {
+    try {
+        let author = await Author.findOne({ _id: req.params.id });
+        res.json({
+            message: "authors details",
+            data: author
+        });
+    } catch (err) {
+        return res.status(404).send({ message: 'can not get author !!' })
+    }
+});
+
+authorRouter.delete('/:id',  async(req, res) => {
+    try {
+        let author = await Author.findByIdAndRemove(req.params.id);
+        res.json({
+            message: "author removed successfully",
+            data: author
+        });
+    } catch (err) {
+        res.status(403).send({ message: 'author removed Failed' });
+    }
+});
+
+authorRouter.patch('/:id', async(req, res) => {
+
+    try {
+        const author = await Author.findByIdAndUpdate({ _id: req.params.id }, req.body, { new: true });
+        res.json({
+            message: "author updated successfully",
+            data: author
+        });
+
+    } catch (err) {
+        res.status(403).send({ message: 'author Updated Failed' });
+    }
 });
 
 

@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill in a valid email address']
     },
     password: { type: String, required: "your password is required" },
-    photo: String,
+    photo: { type: String },
     isAdmin: {
         type: Boolean,
         default: false
