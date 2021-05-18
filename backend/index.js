@@ -12,7 +12,6 @@ const reviewRouter = require("./routes/reviews");
 const userBookRouter = require("./routes/userBooks");
 const authorRouter = require("./routes/authors");
 
-const User = require("./models/user");
 
 const dotenv = require("dotenv").config();
 const uri = process.env.ATLAS_URI;
@@ -32,7 +31,9 @@ mongoose.connect(
     useUnifiedTopology: true,
   },
   (err) => {
-    if (err) return console.error(err);
+    if (err) 
+        return console.error(err);
+        
     console.log(uri);
     console.log(`Connected to mongodb on port ${MONGODB_PORT}.`);
   }

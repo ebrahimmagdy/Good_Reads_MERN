@@ -8,8 +8,12 @@ import '../assets/css/adminDashboard.css';
 
 
 function GetCategories() {
-    return fetch('http://localhost:5000/categories/')
-        .then(response =>
+    return fetch('http://localhost:5000/categories/', {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer "+ new Cookies().get('token'),
+          },
+    }).then(response =>
         response.json())
 }
 
@@ -19,7 +23,7 @@ function EditCategory(data) {
     body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
-      "Authorization": new Cookies().get('token'),
+      "Authorization": "Bearer "+ new Cookies().get('token'),
     },
   }).then(response =>
       response.json()
@@ -49,7 +53,7 @@ function DeleteCategory(id) {
     method: 'DELETE',
     headers: {
       "Content-Type": "application/json",
-      "Authorization": new Cookies().get('token'),
+      "Authorization": "Bearer "+ new Cookies().get('token'),
     },
   }).then(response =>
       response.json()

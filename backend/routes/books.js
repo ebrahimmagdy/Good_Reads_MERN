@@ -26,7 +26,7 @@ Router.post(
   }
 );
 
-Router.get("/", jwt_functions.isAuthorizedAsAdmin, async (req, res) => {
+Router.get("/", async (req, res) => {
   try {
     let { page, size } = req.query;
     let { skip, limit } = getLimits(page, size);
@@ -44,7 +44,6 @@ Router.get("/", jwt_functions.isAuthorizedAsAdmin, async (req, res) => {
 
 Router.get(
   "/:id",
-  jwt_functions.isAuthorizedAsAdmin,
   async (request, response) => {
     try {
       const id = request.params.id;
