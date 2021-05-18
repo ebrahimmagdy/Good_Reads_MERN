@@ -25,7 +25,7 @@ Router.post(
   }
 );
 
-Router.get("/", async (request, response) => {
+Router.get("/", async (req, res) => {
   try {
     let { page, size } = req.query;
     let { skip, limit } = getLimits(page, size);

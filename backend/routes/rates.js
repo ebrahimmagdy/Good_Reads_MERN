@@ -57,6 +57,24 @@ Router.get("/book/:id", async (request, response) => {
   } catch (e) {}
 });
 
+Router.get("/books/:id/avg", async (req, res) => {
+  try {
+    const bookId  = req.params.id;
+    console.log(bookId);
+
+    const bookData = Rate.aggregate([
+      { $match: { rate: { $ne: null }, bookId: bookId } },
+      { $group: { _id: bookId, count: { $sum: 1 } } },
+    ]);
+
+    console.log(bookData);
+
+    res.json(bookData);
+  } catch (error) {
+    res.sendStatus(500).send(error.message);
+  }
+});
+
 Router.patch(
   "/update/:id",
   jwt_functions.isAuthenticated,
