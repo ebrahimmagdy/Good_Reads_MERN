@@ -77,13 +77,18 @@ class UsrSignUp extends React.Component {
       console.log(data);
       
       if(data.status == "user created"){
-      swal({
-            title: "~~ Information ~~", 
-            text : "Your Account was created successfully !", 
-            icon : "success",
-            showLoaderOnConfirm: true,
-            }).then(function(){console.log("added acount!")})
-          }
+        swal({
+          title: "~~ Information ~~", 
+          text : "Your Account was created successfully !", 
+          icon : "success",
+          showLoaderOnConfirm: true,
+        }).then(function(){console.log("added acount!")})
+        let cookies = new Cookies();
+        cookies.set('token', data.token, { path: '/' });
+        console.log(cookies)
+        window.location = "http://localhost:3000/home";
+            
+      }
       else{
           swal({
           title: "Invalid Data !", 

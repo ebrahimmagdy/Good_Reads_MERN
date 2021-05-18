@@ -25,7 +25,7 @@ Router.post("/", async (req, res) => {
             console.log("ok1");
             const token = jwt_functions.generateAccessToken({ email: req.body.email });
             console.log(token);
-            res.json({token});
+            res.json({token: token, msg: "authorized"});
             // jwt.sign(user, process.env.SECRET_ACCESS_TOKEN, { expiresIn: 3600 }, (err, token) => {
             //     console.log(token);
             //     if (!err){

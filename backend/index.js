@@ -20,8 +20,10 @@ mongoose.connect("mongodb://localhost:27017/GoodReads", {
      useNewUrlParser: true,
      useCreateIndex: true,
 }, (err) => {
-    if (err)
+    if (err){
+        console.log(err);
         return console.log("can not connect to db");
+    }
     console.log(uri);
     console.log("connected to db");
 })
