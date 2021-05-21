@@ -4,44 +4,30 @@ const authorRouter = express.Router();
 const Author = require('../models/author');
 const Book = require('../models/book');
 const User = require('../models/user');
-    
+const jwt_functions = require("../helper/jwt_functions") 
+
 /**
  * Adding a new Author
  */
-authorRouter.post('/',(req, res, next) => {
-    const user = User.findOne({email: req.body.email})
-    if(user == null){
-        return res.status(400).send("user not found")
-    }
-    else{
-        Author.findOne({ firstName: req.body.firstName, lastName: req.body.lastName }).then(author => {
-        if (author) 
-            return res.status(400).json({massege: 'Your Author is already exists !' });
-        else{
-            const author = new Author({
-                // photo: req.file.path || 'No photo till the moment',
-                photo: req.body.photo,
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                dateOfBirth: req.body.dateOfBirth,
-                description: req.body.description || '',
-            });
 
-        author.save().then(result => {
-            console.log(result);
-            res.status(201).json({
-                message: "Author Was Created Successfully..",
-            });
-        }).catch(err => {
-            console.log("You got an error : " + err);
-            res.status(500).json({error: err})
-            });
-    }
+ authorRouter.post("/", jwt_functions.isAuthorizedAsAdmin, async (request, response, next) => {
+    try{
+        const authorData = request.body
+        const authorInstance = new Author({
+            firstName: authorData.firstName,
+            lastName: authorData.lastName,
+            dateOfBirth: authorData.dateOfBirth,
+            description: authorData.description,
+            photo: authorData.photo,
         })
+        const author = await authorInstance.save()
+        console.log(author);
+        response.send("author created")
+    } catch (e){
+        console.log(e);
+        response.status(500).json({event:e})
     }
-});
-
-
+})
 /**
  * Return Authors
  */
@@ -65,5 +51,32 @@ authorRouter.get('/:id', (req, res) => {
 });
 
 
+
+
+
+
+
+authorRouter.patch("/update/:id", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
+    try{
+        const id = request.params.id
+        console.log(`update spicefic author with id = ${id}`);
+        const authorData = request.body
+        const author = await Author.findByIdAndUpdate(id, authorData)
+        console.log(author);
+        response.send("author updated")
+    } catch (e){
+        console.log(e);
+    }
+})
+
+authorRouter.delete("/:id", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
+    try{
+        const id = request.params.id
+        const author = await Author.findByIdAndDelete(id)
+        response.send("author deleted")
+    } catch (e){
+        console.log(e);
+    }
+})
 
 module.exports = authorRouter;

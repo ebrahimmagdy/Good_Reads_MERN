@@ -54,6 +54,10 @@ Router.patch("/update/:id", jwt_functions.isAuthorizedAsAdmin, async (request, r
     }
 })
 
+
+
+
+
 Router.delete("/:id", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
     try{
         const id = request.params.id

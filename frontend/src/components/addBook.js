@@ -33,24 +33,22 @@ function GetCategories() {
     }).then(response => response.json())
   }
 
-function AddBook(data)
-{
-    const formData = new FormData();
-    formData.append('name', data.name);
-    formData.append('categoryId', data.categoryId);
-    formData.append('authorId', data.authorId);
-    formData.append('photo', data.photo);
 
-  return fetch('http://localhost:5000/books/', {
-    method: 'POST',
-    body: formData,
-    headers: {
+  function AddBook(data) {
+    return fetch('http://localhost:5000/books/', {
+      body: JSON.stringify(data),
+      method: 'POST',
+      headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer "+ new Cookies().get('token'),
-    },
-  }).then(response => response.json()
-   ).catch(error => {console.log('Error while adding book!');})
-}
+      },
+    }).then(response =>
+        response.json()
+    ).catch(error => {
+        console.log('Error while adding adding Category');
+    })
+  }
+  
 
 function EditBook(data) 
 {
