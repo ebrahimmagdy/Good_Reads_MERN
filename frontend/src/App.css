@@ -1,0 +1,13 @@
+#home_side{
+    position: absolute;
+    display: inline-block;
+    width: 15%;
+    margin: 2% 5px 5px 5px;
+}
+
+#home_table{
+    position: absolute;
+    display: inline-block;
+    width: 70%;
+    margin: 2% 5px 5px 20%;
+}

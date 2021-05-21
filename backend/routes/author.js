@@ -42,13 +42,21 @@ authorRouter.get('/', (req, res) => {
 /**
  * Return Author with a specific id
  */
-authorRouter.get('/:id', (req, res) => {
-    Author.findById(req.params.id).then((data) => {
-        res.send(data);
-    }).catch((err) => {
-        res.send('Error While getting data : ' + err);
-    });
+
+
+
+authorRouter.get('/:id', async(req, res) => {
+    try {
+        let author = await Author.findOne({ _id: req.params.id });
+        res.json({
+            message: "authors details",
+            data: author
+        });
+    } catch (err) {
+        return res.status(404).send({ message: 'can not get author !!' })
+    }
 });
+
 
 
 

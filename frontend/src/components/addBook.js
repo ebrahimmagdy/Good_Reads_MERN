@@ -111,14 +111,14 @@ class AddBookForm extends Component{
         GetCategories()
           .then(data => {
             this.setState({
-                categories: data,
+                categories: data.data,
                 newBook: {...this.state.newBook, categoryId: data[0]._id},
             });
           }).then(() => {
               GetAuthors()
               .then(data => {
                 this.setState({
-                    authors: data,
+                    authors: data.data,
                     newBook: {...this.state.newBook, authorId: data[0]._id},
                 })
               }).then(() => {
@@ -171,7 +171,7 @@ class AddBookForm extends Component{
             AddBook(this.state.newBook).then(data => {
             GetBooks().then((data) => {
                 this.setState({
-                    books: data,
+                    books: data.data,
                     newBook: '',
                 });
                 swal({
@@ -193,7 +193,7 @@ class AddBookForm extends Component{
         EditBook(this.state.newBook).then(data => {
             GetBooks().then((data) => {
                 this.setState({
-                    books: data,
+                    books: data.data,
                     newBook :'',
                 });
             })
@@ -209,7 +209,7 @@ class AddBookForm extends Component{
         DeleteBook(books[index.target.value]._id).then((data) => {
         GetBooks().then(data => {
             this.setState({
-                books: data,
+                books: data.data,
                 newBook: "",
                 });
             });
@@ -218,20 +218,20 @@ class AddBookForm extends Component{
 
     componentDidMount(){
         GetBooks().then(data => {
-        this.setState({books: data,})
+        this.setState({books: data.data,})
       });
     
       GetCategories().then(data => {
         this.setState({
-            categories: data,
-            newBook: {...this.state.newBook, categoryId: data[0]._id},
+            categories: data.data,
+            newBook: {...this.state.newBook, categoryId: data.data[0]._id},
         });
       });
       
       GetAuthors().then(data => {
         this.setState({
-            authors: data,
-            newBook: {...this.state.newBook, authorId: data[0]._id},
+            authors: data.data,
+            newBook: {...this.state.newBook, authorId: data.data[0]._id},
         })
       });
     }
@@ -351,7 +351,9 @@ class AddBookForm extends Component{
                     </thead>
 
                     <thead>
-                    {this.state.books.map((book , index) =>
+                    {
+                          this.state.books.length >0?
+                    this.state.books.map((book , index) =>
                         <tr>
                             <th>{index+1}</th>
                             <th key={index}>
@@ -359,20 +361,29 @@ class AddBookForm extends Component{
                                      width="65" height="65" alt="book Image"/>
                             </th>
                             <th>{book.name}</th>
-                            <th>{book.categoryId.name}</th>
-                            <th>{book.authorId.firstName +" "+book.authorId.lastName}</th>
                             <th>
-                                <button value={JSON.stringify(book)} type="button"
+                                {/* {book.categoryId.name} */}
+                                category
+                                
+                            </th>
+                            <th>
+                                author
+                                {/* {book.authorId.firstName +" "+book.authorId.lastName} */}
+                            </th>
+                            <th>
+                                {/* <button value={JSON.stringify(book)} type="button"
                                         className="btn btn-info"
                                         name="edit"
-                                        onClick={this.handling_modal}>Edit</button> {" "}
+                                        onClick={this.handling_modal}>Edit</button> {" "} */}
                                 <button value= {index} onClick={this.handle_deletingBook.bind(this)}
                                     type="button" className="btn btn-danger">Delete</button> </th>
-                        </tr>)}
+                        </tr>):<tr>{JSON.stringify(this.state.books)}</tr>}
+            {/* <tr>{JSON.stringify(this.state.books)}</tr> */}
 
                     </thead>
                 </Table>
-            </div>);
+            </div>
+            );
     }
 }
 

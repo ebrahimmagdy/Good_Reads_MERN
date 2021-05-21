@@ -1,17 +1,33 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const rateModel = require("./rate");
+const reviewModel = require("./review");
+const userBookModel = require("./userBook");
 
-const bookSchema = new mongoose.Schema({
-    photo:{type:String},
-    name : {type:String},
-    categoryId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"catogries"
+const bookSchema = new mongoose.Schema(
+  {
+    name: { type: String, trim: true, required: true },
+    categoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
     },
-    authorId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"authors"
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Author",
     },
+    photo: { type: Buffer },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+bookSchema.post("remove", async function (doc, next) {
+  const deletedBook = this;
+  await rateModel.deleteMany({ bookId: deletedBook._id });
+  await reviewModel.deleteMany({ bookId: deletedBook._id });
+  await userBookModel.deleteMany({ bookId: deletedBook._id });
+  return next();
 });
 
-const Books = mongoose.model('books', bookSchema);
-module.exports = Books;
+const Book = mongoose.model("Book", bookSchema);
+module.exports = Book;

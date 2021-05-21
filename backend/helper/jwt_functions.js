@@ -1,61 +1,62 @@
-const User = require("../models/user")
-const jwt = require('jsonwebtoken')
-const dotenv = require('dotenv').config()
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv").config();
 
 function generateAccessToken(email) {
-    console.log("inside generate tokken")
-    console.log(process.env.SECRET_ACCESS_TOKEN);
-    return jwt.sign(email, process.env.SECRET_ACCESS_TOKEN, { expiresIn: '3600s' });
+  console.log("inside generate tokken");
+  console.log(process.env.SECRET_ACCESS_TOKEN);
+  return jwt.sign(email, process.env.SECRET_ACCESS_TOKEN, {
+    expiresIn: "3600s",
+  });
 }
 
 function isAuthorizedAsAdmin(req, res, next) {
-    console.log(req.path);
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    
-    console.log(token);
-    console.log(process.env.SECRET_ACCESS_TOKEN);
+  console.log(req.path);
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-    if (token == null) return res.sendStatus(401)
+  console.log(token);
+  console.log(process.env.SECRET_ACCESS_TOKEN);
 
-    jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, async (err, user) => {
-        console.log(err)
+  if (token == null) return res.sendStatus(401);
 
-        if (err) 
-            return res.sendStatus(403)
+  jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, async (err, user) => {
+    console.log(err);
 
-        result = await User.findOne({email: user.email})
-        if(result.isAdmin){
-            req.user = user
-            console.log(user);
-            next()
-        }else{
-            console.log(result);
-            console.log("not admin");
-            return res.sendStatus(401)
-        }
-    })
+    if (err) return res.sendStatus(403);
+
+    result = await User.findOne({ email: user.email });
+    if (result.isAdmin) {
+      req.user = user;
+      console.log(user);
+      next();
+    } else {
+      console.log(result);
+      console.log("not admin");
+      return res.sendStatus(401);
+    }
+  });
 }
 
 function isAuthenticated(req, res, next) {
-    console.log(req.path);
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    
-    console.log(token);
-    console.log(process.env.SECRET_ACCESS_TOKEN);
+  console.log(req.path);
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-    if (token == null) return res.sendStatus(401)
+  console.log(token);
+  console.log(process.env.SECRET_ACCESS_TOKEN);
 
-    jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, (err, user) => {
-        console.log(err)
+  if (token == null) return res.sendStatus(401);
 
-        if (err) return res.sendStatus(403)
+  jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, (err, user) => {
+    console.log(err);
 
-        req.user = user
-        console.log(user);
-        next()
-    })
+    if (err) return res.sendStatus(403);
+
+    req.user = user;
+    console.log(user);
+    next();
+  });
 }
 
-module.exports = { isAuthorizedAsAdmin, isAuthenticated, generateAccessToken }
+module.exports = { isAuthorizedAsAdmin, isAuthenticated, generateAccessToken };

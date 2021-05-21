@@ -15,7 +15,7 @@ function sendingAdminAuth(data) {
   }).then(response => response.json()
   ).catch(error => { swal("Connection Problem !", "Error while sending admin data !", "error");})
 }
-/******************************************************************** */
+/* ******************************************************************* */
 class AdminLogin extends Component {
 
   constructor(props) {
@@ -42,9 +42,9 @@ class AdminLogin extends Component {
       'password': this.state.password,
     }).then(data => {
       console.log(data)
-      if (data.msg !== "user not found") {
+      if (data.token) {
         let cookies = new Cookies();
-        cookies.set('token', data.token, {path: '/'});
+        cookies.set('token', data.token, { path: '/' });
         console.log(cookies)
         window.location = "http://localhost:3000/dashboard";
       }

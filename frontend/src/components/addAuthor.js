@@ -94,7 +94,7 @@ class AddAuthorForm extends Component {
       GetAuthors()
       .then(data => {
         this.setState({
-            authors: data,
+            authors: data.data,
         })
       });
     }
@@ -139,7 +139,7 @@ class AddAuthorForm extends Component {
             console.log(data);
             GetAuthors().then(data => {
                 this.setState({
-                  authors: data,
+                  authors: data.data,
                   newAuthor: "",
                 });                  
                 swal({
@@ -164,7 +164,7 @@ class AddAuthorForm extends Component {
             GetAuthors()
             .then(data => {
                 this.setState({
-                    authors: data,
+                    authors: data.data,
                     newAuthor : "",
                 });
             });
@@ -181,7 +181,7 @@ class AddAuthorForm extends Component {
         DeleteAuthor(authors[index.target.value]._id).then((data) => {
         GetAuthors().then(data => {
         this.setState({
-          authors: data,
+          authors: data.data,
           newAuthor : "",
           });
         });

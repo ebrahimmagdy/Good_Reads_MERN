@@ -1,12 +1,45 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const bookModel = require("./book");
 
-const authorSchema = new mongoose.Schema({
-    photo: { type: String },
-    firstName: { type: String },
-    lastName: { type: String },
-    dateOfBirth: { type: Date },
-    description: { type: String }
+const authorSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    dateOfBirth: {
+      type: Date,
+    },
+    photo: {
+      type: Buffer,
+    },
+    description: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// post hook to cascade delete author books on deleting the author
+authorSchema.post("remove", async function (doc, next) {
+  const deletedAuthor = this;
+  const authorBooks = (await bookModel.find({ authorId: deletedAuthor._id, }).exec()) || [];
+  if (authorBooks.length !== 0) {
+    authorBooks.forEach((book) => {
+      book.remove();
+    });
+  }
+
+  return next();
 });
 
-const Authers = mongoose.model('authors', authorSchema);
-module.exports = Authers;
+const Author = mongoose.model("Author", authorSchema);
+module.exports = Author;

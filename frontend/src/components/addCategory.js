@@ -122,7 +122,7 @@ class AddCategoryForm extends Component {
                 GetCategories()
                 .then(data => {
                     this.setState({
-                        categories: data,
+                        categories: data.data,
                         newCategory : "",
             });
             swal({
@@ -145,7 +145,7 @@ class AddCategoryForm extends Component {
             .then(data => {
                 console.log(data);
                 this.setState({
-                    categories: data,
+                    categories: data.data,
                     newCategory : "",
                 });
             });
@@ -156,7 +156,7 @@ class AddCategoryForm extends Component {
 
     componentDidMount(){
       GetCategories()
-      .then(data => { this.setState({categories: data,})
+      .then(data => { this.setState({categories: data.data,})
       });
     }
 
@@ -229,7 +229,9 @@ class AddCategoryForm extends Component {
             </tr>
             </thead>
             <thead>
-            {this.state.categories.map((category , index) =>
+            {
+                (this.state.categories.length > 0)?
+            this.state.categories.map((category , index) =>
                 <tr>
                     <th>{index+1}</th>
                     <th key={index}>
@@ -254,7 +256,7 @@ class AddCategoryForm extends Component {
 
 
 
-                        </tr>)}
+                        </tr>):<tr><td>No data</td></tr>}
                     </thead>
                 </Table>
         </div>
