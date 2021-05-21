@@ -19,7 +19,7 @@ function GetCategories() {
 
 function EditCategory(data) {
   return fetch('http://localhost:5000/categories/update/'+data._id, {
-    method: 'PUT',
+    method: 'PATCH',
     body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
@@ -122,7 +122,7 @@ class AddCategoryForm extends Component {
                 GetCategories()
                 .then(data => {
                     this.setState({
-                        categories: data,
+                        categories: data.data,
                         newCategory : "",
             });
             swal({
@@ -145,7 +145,7 @@ class AddCategoryForm extends Component {
             .then(data => {
                 console.log(data);
                 this.setState({
-                    categories: data,
+                    categories: data.data,
                     newCategory : "",
                 });
             });
@@ -156,7 +156,7 @@ class AddCategoryForm extends Component {
 
     componentDidMount(){
       GetCategories()
-      .then(data => { this.setState({categories: data,})
+      .then(data => { this.setState({categories: data.data,})
       });
     }
 
@@ -229,7 +229,9 @@ class AddCategoryForm extends Component {
             </tr>
             </thead>
             <thead>
-            {this.state.categories.map((category , index) =>
+            {
+                (this.state.categories.length > 0)?
+            this.state.categories.map((category , index) =>
                 <tr>
                     <th>{index+1}</th>
                     <th key={index}>
@@ -246,18 +248,7 @@ class AddCategoryForm extends Component {
                             type="button" className="btn btn-danger">Delete</button> 
 
 
-<div id="app-cover">
-<input type="checkbox" id="checkbox"/>
-<div id="bin-icon">
-    <div id="lid"></div>
-    <div id="box">
-      <div id="box-inner">
-        <div id="bin-lines"></div>
-      </div>
-    </div>
-  </div>
-    <div id="layer"></div>
-</div>
+
 
 
                                     </th>
@@ -265,7 +256,7 @@ class AddCategoryForm extends Component {
 
 
 
-                        </tr>)}
+                        </tr>):<tr><td>No data</td></tr>}
                     </thead>
                 </Table>
         </div>

@@ -3,6 +3,7 @@ const { getLimits } = require("../helper/pagination");
 const authorRouter = express.Router();
 const Author = require("../models/author");
 const User = require("../models/user");
+const jwt_functions = require("../helper/jwt_functions") 
 
 /**
  * Adding a new Author
@@ -93,4 +94,19 @@ authorRouter.delete("/:id", async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+
+
+authorRouter.patch("/update/:id", jwt_functions.isAuthorizedAsAdmin, async (request, response) => {
+  try{
+      const id = request.params.id
+      console.log(`update spicefic author with id = ${id}`);
+      const authorData = request.body
+      const author = await Author.findByIdAndUpdate(id, authorData)
+      console.log(author);
+      response.send("author updated")
+  } catch (e){
+      console.log(e);
+  }
+})
 module.exports = authorRouter;

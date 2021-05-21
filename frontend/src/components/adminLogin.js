@@ -42,7 +42,7 @@ class AdminLogin extends Component {
       'password': this.state.password,
     }).then(data => {
       console.log(data)
-      if (data.msg === "authorized") {
+      if (data.token) {
         let cookies = new Cookies();
         cookies.set('token', data.token, { path: '/' });
         console.log(cookies)
